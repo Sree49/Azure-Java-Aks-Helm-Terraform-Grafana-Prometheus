@@ -9,6 +9,9 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     node_count = 1
     vm_size    = "Standard_DC2ds_v3"
   }
+  oms_agent {
+    log_analytics_workspace_id =var.law-id
+  }
 node_provisioning_profile {
     mode = "Auto"
   }
