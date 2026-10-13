@@ -169,6 +169,7 @@ stages:
         acrname: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.acrname'] ]
         aks_name: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.aks_name'] ]
         rg_name: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.rg_name'] ]
+        appinsights_connection_string: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.appinsights_connection_string'] ]
       steps:
       - task: DownloadBuildArtifacts@1
         inputs:
