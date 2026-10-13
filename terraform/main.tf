@@ -18,6 +18,7 @@ module "aks" {
     RG_Name = var.RG_Name
     RG_Location = var.RG_Location
     container-id = module.acr.container-id
+    law-id              = module.appinsight.law-id
     depends_on = [module.acr]
 }
 module "appinsight" {
