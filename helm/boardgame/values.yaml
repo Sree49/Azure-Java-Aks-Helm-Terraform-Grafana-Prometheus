@@ -5,6 +5,10 @@
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
+env:
+  APPLICATIONINSIGHTS_CONNECTION_STRING: ""
+
+
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   repository: acr12345.azurecr.io/gamebox

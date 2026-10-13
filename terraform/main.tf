@@ -20,5 +20,9 @@ module "aks" {
     container-id = module.acr.container-id
     depends_on = [module.acr]
 }
-
+module "appinsight" {
+  source              = "./modules/appinsight"
+  location            = var.RG_Location
+  resource_group_name = var.RG_Name
+}
 
