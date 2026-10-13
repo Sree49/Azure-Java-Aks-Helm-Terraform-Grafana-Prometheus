@@ -16,8 +16,6 @@ stages:
   jobs:
     - job:
       displayName: 'Maven Build and Push Artifacts'
-      pool:
-        name: 'sreenija'
       steps:
       - task: Maven@4
         inputs:
