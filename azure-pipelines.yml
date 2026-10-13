@@ -154,7 +154,7 @@ stages:
               echo "##vso[task.setvariable variable=aks_name;isOutput=true]$aks_name"
               echo "##vso[task.setvariable variable=rg_name;isOutput=true]$rg_name"
 	            echo "##vso[task.setvariable variable=appinsights;issecret=true;isOutput=true]$appinsights"
-            name: setvariable
+          name: setvariable
 
 - stage: 'Deploy'
   displayName: 'Push image to ACR and Deploy code to Kubernetes'
