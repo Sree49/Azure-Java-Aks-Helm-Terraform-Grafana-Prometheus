@@ -149,11 +149,11 @@ stages:
               aks_name=$(terraform output -raw aks_name)
               ACR_NAME=$(terraform output -raw registry_name)
               rg_name=$(terraform output -raw rg_name)
-	            appinsights_connection_string=$(terraform output -raw appinsights_connection_string)
+	            appinsights=$(terraform output -raw appinsights_connection_string)
               echo "##vso[task.setvariable variable=acrname;isOutput=true]$ACR_NAME"
               echo "##vso[task.setvariable variable=aks_name;isOutput=true]$aks_name"
               echo "##vso[task.setvariable variable=rg_name;isOutput=true]$rg_name"
-	            echo "##vso[task.setvariable variable=appinsights_connection_string;issecret=true;isOutput=true]$appinsights_connection_string"
+	            echo "##vso[task.setvariable variable=appinsights;issecret=true;isOutput=true]$appinsights"
           name: setvariable
 
 - stage: 'Deploy'
@@ -169,7 +169,7 @@ stages:
         acrname: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.acrname'] ]
         aks_name: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.aks_name'] ]
         rg_name: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.rg_name'] ]
-        appinsights_connection_string: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.appinsights_connection_string'] ]
+        appinsights: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.appinsights'] ]
       steps:
       - task: DownloadBuildArtifacts@1
         inputs:
@@ -217,7 +217,7 @@ stages:
             --set image.repository=$(acrname).azurecr.io/$(imagename)
             --set image.tag=$(tag)
 	        overrideValues: |
-            env.APPLICATIONINSIGHTS_CONNECTION_STRING=$appinsights_connection_string
+            env.APPLICATIONINSIGHTS_CONNECTION_STRING=$appinsights
       
 
 
