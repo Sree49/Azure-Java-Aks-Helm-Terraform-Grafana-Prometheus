@@ -7,6 +7,8 @@ variables:
   imagename: gamebox
   tag: $(Build.BuildId)
 
+pool:
+  vmImage: ubuntu-latest
 
 stages:
 - stage: Build
@@ -17,22 +19,9 @@ stages:
       pool:
         name: 'sreenija'
       steps:
-      - task: SonarQubePrepare@8
-        inputs:
-          SonarQube: 'sonarqube'
-          scannerMode: 'other'
-          extraProperties: |
-            # Additional properties that will be passed to the scanner, 
-            # Put one key=value per line, example:
-            # sonar.exclusions=**/*.bin
-            sonar.java.binaries=.
-            sonar.projectKey=Boardgame
-            sonar.projectName=Boardgame
       - task: Maven@4
-        env:
-          JAVA_HOME_17_X64: /usr/lib/jvm/java-17-openjdk-amd64
         inputs:
-          azureSubscription: 'azure-connection'
+          azureSubscription: 'azure'
           mavenPomFile: 'pom.xml'
           publishJUnitResults: true
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
@@ -44,12 +33,10 @@ stages:
           mavenOptions: '-Xmx3072m'
           mavenAuthenticateFeed: false
           effectivePomSkip: false
-          sonarQubeRunAnalysis: true
+          sonarQubeRunAnalysis: false
           sqMavenPluginVersionChoice: 'latest'
     
-      - task: SonarQubePublish@8
-        inputs:
-          pollingTimeoutSec: '300'
+      
       
       - task: CopyFiles@2
         inputs:
@@ -108,7 +95,7 @@ stages:
             provider: 'azurerm'
             command: 'init'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-            backendServiceArm: 'azure-connection'
+            backendServiceArm: 'azure'
             backendAzureRmResourceGroupName: 'rg'
             backendAzureRmStorageAccountName: 'tfstatefilestore1678'
             backendAzureRmContainerName: 'tfstate-container'
@@ -127,7 +114,7 @@ stages:
             provider: 'azurerm'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             command: 'plan'
-            environmentServiceNameAzureRM: 'azure-connection'
+            environmentServiceNameAzureRM: 'azure'
 
         - task: TerraformTask@5
           inputs:
@@ -135,12 +122,12 @@ stages:
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             command: 'apply'
             commandOptions: '-auto-approve'
-            environmentServiceNameAzureRM: 'azure-connection'
+            environmentServiceNameAzureRM: 'azure'
 
       
         - task: AzureCLI@2
           inputs:
-            azureSubscription: 'azure-connection'
+            azureSubscription: 'azure'
             scriptType: 'bash'
             scriptLocation: 'inlineScript'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
@@ -177,7 +164,7 @@ stages:
       - task: AzureCLI@3
         inputs:
           connectionType: 'azureRM'
-          azureSubscription: 'azure-connection'
+          azureSubscription: 'azure'
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
@@ -201,7 +188,7 @@ stages:
       - task: HelmDeploy@1
         inputs:
           connectionType: 'Azure Resource Manager'
-          azureSubscription: 'azure-connection'
+          azureSubscription: 'azure'
           azureResourceGroup: '$(rg_name)'
           kubernetesCluster: '$(aks_name)'
           releaseName: 'boardgame'
