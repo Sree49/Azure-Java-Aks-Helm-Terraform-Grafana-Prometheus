@@ -24,5 +24,6 @@ module "appinsight" {
   source              = "./modules/appinsight"
   location            = var.RG_Location
   resource_group_name = var.RG_Name
+  depends_on = [module.rg]
 }
 
