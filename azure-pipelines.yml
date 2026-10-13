@@ -149,11 +149,11 @@ stages:
               aks_name=$(terraform output -raw aks_name)
               ACR_NAME=$(terraform output -raw registry_name)
               rg_name=$(terraform output -raw rg_name)
-	      appinsights_connection_string=$(terraform output -raw appinsights_connection_string)
+	            appinsights_connection_string=$(terraform output -raw appinsights_connection_string)
               echo "##vso[task.setvariable variable=acrname;isOutput=true]$ACR_NAME"
               echo "##vso[task.setvariable variable=aks_name;isOutput=true]$aks_name"
               echo "##vso[task.setvariable variable=rg_name;isOutput=true]$rg_name"
-	      echo "##vso[task.setvariable variable=appinsights_connection_string;issecret=true;isOutput=true]$appinsights_connection_string"
+	            echo "##vso[task.setvariable variable=appinsights_connection_string;issecret=true;isOutput=true]$appinsights_connection_string"
           name: setvariable
 
 - stage: 'Deploy'
