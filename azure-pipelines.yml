@@ -215,7 +215,7 @@ stages:
           arguments: >
             --set image.repository=$(acrname).azurecr.io/$(imagename)
             --set image.tag=$(tag)
-	  overrideValues: |
+	        overrideValues: |
             env.APPLICATIONINSIGHTS_CONNECTION_STRING=$appinsights_connection_string
       
 
