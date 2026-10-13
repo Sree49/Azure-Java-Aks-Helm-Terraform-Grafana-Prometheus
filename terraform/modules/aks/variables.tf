@@ -9,3 +9,4 @@ variable "RG_Location" {
 variable "container-id" {
   type = string
 }
+variable "law-id" {}
