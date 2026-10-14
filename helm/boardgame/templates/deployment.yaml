@@ -39,10 +39,10 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+          - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+            value: {{ .Values.env.APPLICATIONINSIGHTS_CONNECTION_STRING | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-	        env:
-            - name: APPLICATIONINSIGHTS_CONNECTION_STRING
-              value: {{ .Values.env.APPLICATIONINSIGHTS_CONNECTION_STRING | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
