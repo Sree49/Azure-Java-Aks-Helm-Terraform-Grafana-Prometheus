@@ -220,11 +220,11 @@ stages:
         
     steps:
     - task: DownloadBuildArtifacts@1
-        inputs:
-          buildType: 'current'
-          downloadType: single
-          artifactName: drop
-          downloadPath: $(Pipeline.Workspace)
+      inputs:
+        buildType: 'current'
+        downloadType: single
+        artifactName: drop
+        downloadPath: $(Pipeline.Workspace)
 
     - task: HelmInstaller@1
       inputs:
