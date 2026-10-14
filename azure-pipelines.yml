@@ -205,4 +205,42 @@ stages:
             --set-string env.APPLICATIONINSIGHTS_CONNECTION_STRING="$(app_insight)"
       
 
+- stage: Monitoring
+  displayName: 'Install Prometheus and Grafana'
+  dependsOn: Deploy
+  condition: succeeded()
+  jobs:
+  - job: InstallMonitoring
+    pool:
+      vmImage: ubuntu-latest
 
+    variables:
+      aks_name: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.aks_name'] ]
+      rg_name: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.rg_name'] ]
+
+    steps:
+
+    - task: HelmInstaller@1
+      inputs:
+        helmVersionToInstall: 'latest'
+
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'azure'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+
+          az aks get-credentials \
+            --resource-group $(rg_name) \
+            --name $(aks_name) \
+            --overwrite-existing
+
+          kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
+
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo update
+
+          helm upgrade --install monitoring \
+            prometheus-community/kube-prometheus-stack \
+            --namespace monitoring
