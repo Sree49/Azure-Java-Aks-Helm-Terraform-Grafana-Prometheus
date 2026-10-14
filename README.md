@@ -44,11 +44,20 @@ sonarqube connection- to connect to sonarqube.
 <img src="./images/service-connection.png" alt="service-connection" width="400">
 
 Monitor: \
+App Insight: \
 • Step 1: Provision Application Insights and a Log Analytics Workspace using Terraform, then output the Application Insights connection string to the pipeline as a variable. Add log analytics id to aks module. \
 • Step 2: Add application insights java monitoring agent in dockerfile. \
 • Step 3: Add the Application Insights variable placeholder to the Helm chart variables file (values.yaml) and env variable in deployment.yaml file. \
 • Step 4: Inject the connection string variable into the Helm deploy task at runtime. \
 <img src="./images/monitor-live.png" alt="monitor-live" width="400">  \
+
+Prometheus and Grafana Monitor: \
+• Step 1: Add new stage for monitor, use Azure cli to setup new namespace monitoring, prometheus install.
+• Step 2: Get grafana password.
+• Step 3: http://pub_ip:3000 username: admin
+• Step 4: Add dependencies in pom.xml file and application.properties file.
+
+
 
 
 
