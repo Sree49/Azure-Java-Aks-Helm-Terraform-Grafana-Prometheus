@@ -217,8 +217,14 @@ stages:
     variables:
       aks_name: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.aks_name'] ]
       rg_name: $[ stageDependencies.Provision.Provision_Infra.outputs['setvariable.rg_name'] ]
-
+        
     steps:
+    - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: 'current'
+          downloadType: single
+          artifactName: drop
+          downloadPath: $(Pipeline.Workspace)
 
     - task: HelmInstaller@1
       inputs:
@@ -230,6 +236,8 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
+          echo "AKS Name: $(aks_name)"
+          echo "RG Name: $(rg_name)"
 
           az aks get-credentials \
             --resource-group $(rg_name) \
