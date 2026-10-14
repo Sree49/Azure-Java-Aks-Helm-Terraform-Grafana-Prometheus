@@ -4,6 +4,7 @@ metadata:
   name: {{ include "boardgame.fullname" . }}
   labels:
     {{- include "boardgame.labels" . | nindent 4 }}
+    release: monitoring
 spec:
   type: {{ .Values.service.type }}
   ports:
