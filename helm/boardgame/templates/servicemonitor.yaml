@@ -5,17 +5,21 @@ metadata:
   name: {{ include "boardgame.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
+    release: monitoring
     {{- include "boardgame.labels" . | nindent 4 }}
+
 spec:
   selector:
     matchLabels:
       {{- include "boardgame.selectorLabels" . | nindent 6 }}
-  endpoints:
-    - port: {{ .Values.serviceMonitor.port }}
-      path: {{ .Values.serviceMonitor.path }}
-      interval: {{ .Values.serviceMonitor.interval }}
-      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
+
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 30s
+      scrapeTimeout: 10s
 {{- end }}
