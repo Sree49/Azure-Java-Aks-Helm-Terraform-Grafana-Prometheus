@@ -1,4 +1,4 @@
-Maven Project deployed to Kubernetes using Helm Charts. Sonarqube for source code analysis. Monitoring using App insight.
+Maven Project deployed to Kubernetes using Helm Charts. Sonarqube for source code analysis. Monitoring using App insight, Grafana and Prometheus.
 
 Project Build Maven:
 Used self hosted agent. \
