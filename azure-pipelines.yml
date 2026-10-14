@@ -207,7 +207,9 @@ stages:
 
 - stage: Monitoring
   displayName: 'Install Prometheus and Grafana'
-  dependsOn: Deploy
+  dependsOn: 
+    - Deploy
+    - Provision
   condition: succeeded()
   jobs:
   - job: InstallMonitoring
