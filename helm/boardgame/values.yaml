@@ -163,3 +163,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+serviceMonitor:
+  enabled: true
+  port: http
+  path: /actuator/prometheus
+  interval: 30s
+  scrapeTimeout: 10s
