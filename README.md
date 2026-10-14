@@ -52,10 +52,30 @@ App Insight: \
 <img src="./images/monitor-live.png" alt="monitor-live" width="400">  \
 
 Prometheus and Grafana Monitor: \
-• Step 1: Add new stage for monitor, use Azure cli to setup new namespace monitoring, prometheus install.
-• Step 2: Get grafana password.
-• Step 3: http://pub_ip:3000 username: admin
-• Step 4: Add dependencies in pom.xml file and application.properties file.
+• Step 1: Add new stage for monitor, use Azure cli to setup new namespace monitoring, prometheus install. \
+• Step 2: Get grafana password. \ 
+kubectl get secret monitoring-grafana -n monitoring -o jsonpath="{.data.admin-password}" | base64 -d \
+• Step 3: Access Grafana: Port-forward- kubectl port-forward svc/monitoring-grafana 3000:80 -n monitoring\
+http://pub_ip:3000 username: admin \
+• Step 4: Add dependencies in pom.xml file and application.properties file. \
+• Step 5: Add servicemonitor.yaml file. include labels as release: monitoring (because It was created by the kube-prometheus-stack Helm chart when installed Prometheus) \
+verify: \
+ kubectl get prometheus -n monitoring -o yaml | grep -A20 serviceMonitorSelector \
+curl http://localhost:8080/actuator/prometheus \
+kubectl get servicemonitor -A \
+curl http://localhost:8080/actuator/prometheus \
+kubectl port-forward svc/monitoring-kube-prometheus-prometheus 9090:9090 -n monitoring  \
+kubectl get prometheus -n monitoring -o yaml | grep -A20 serviceMonitorSelector \
+• Step 6: To verify prometheus \
+• Step 7: Grafana url->Datasource-> You can see Prometheus. Click Test. \
+• Step 8: Dashboards → New Dashboard → Add Visualization -> Datasource-Prometheus -> Timeseries. \
+Add queries such as: \
+up{job=~".*boardgame.*"} \
+jvm_memory_used_bytes / 1024 / 1024 \
+process_cpu_usage * 100 \
+http_server_requests_seconds_count \
+jvm_threads_live_threads 
+
 
 
 
