@@ -202,7 +202,7 @@ stages:
           arguments: >
             --set image.repository=$(acrname).azurecr.io/$(imagename)
             --set image.tag=$(tag)
-            --set-string APPLICATIONINSIGHTS_CONNECTION_STRING="$(app_insight)"
+            --set-string env.APPLICATIONINSIGHTS_CONNECTION_STRING="$(app_insight)"
       
 
 
